@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python3 wsgi.py
+/usr/local/bin/uwsgi --ini /usr/src/app/uwsgi.ini
