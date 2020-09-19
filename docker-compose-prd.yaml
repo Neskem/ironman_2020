@@ -1,0 +1,35 @@
+version: '3'
+services:
+    nginx:
+      container_name: nginx
+      image: nginx
+      ports:
+        - "80:80"
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      restart: always
+      networks:
+        - ironman-net
+    redis:
+      container_name: redis
+      image: redis:4.0
+      ports:
+        - "6379:6379"
+      restart: always
+      networks:
+        - ironman-net
+    ironman:
+      container_name: ironman
+      image: ghjjhg567/ironman:latest
+      volumes:
+        - ./app/:/usr/src/app/app
+      env_file:
+        - prd.env
+      restart: always
+      networks:
+        - ironman-net
+
+networks:
+  ironman-net:
+    driver: bridge
