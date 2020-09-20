@@ -1,0 +1,5 @@
+version: '3'
+services:
+    ironman:
+      env_file:
+        - stg.env

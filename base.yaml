@@ -22,13 +22,15 @@ services:
     ironman:
       container_name: ironman
       image: ghjjhg567/ironman:latest
+      build:
+        context: .
+        dockerfile: Dockerfile
       volumes:
         - ./app/:/usr/src/app/app
-      env_file:
-        - stg.env
       restart: always
       networks:
         - ironman-net
+      entrypoint: ./docker-entrypoint.sh
 
 networks:
   ironman-net:
