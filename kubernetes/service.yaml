@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ironman
+  labels:
+    app: ironman
+spec:
+  type: ClusterIP
+  ports:
+    - name: ironman
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: ironman
