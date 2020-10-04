@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ironman-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: ironman
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /v1/hc
+        pathType: Prefix
+        backend:
+          serviceName: ironman
+          servicePort: 80
