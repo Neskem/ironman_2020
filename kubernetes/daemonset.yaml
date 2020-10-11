@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ironman
+  labels:
+    name: ironman
+    app: ironman
+spec:
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: ironman
+  template:
+    metadata:
+      labels:
+        app: ironman
+    spec:
+      nodeSelector:
+        app: ironman
+      containers:
+       - name: ironman
+         image: ghjjhg567/ironman:latest
+         imagePullPolicy: Always
+         ports:
+           - containerPort: 8100
+         envFrom:
+           - secretRef:
+               name: ironman-config
+         command: ["./docker-entrypoint.sh"]
+         resources:
+           limits:
+             memory: 200Mi
+           requests:
+             cpu: 100m
+             memory: 200Mi
+       - name: redis
+         image: redis:4.0
+         imagePullPolicy: Always
+         ports:
+           - containerPort: 6379
+       - name: nginx
+         image: nginx
+         imagePullPolicy: Always
+         ports:
+           - containerPort: 80
+         volumeMounts:
+           - mountPath: /etc/nginx/nginx.conf
+             name: nginx-conf-volume
+             subPath: nginx.conf
+             readOnly: true
+           - mountPath: /etc/nginx/conf.d/default.conf
+             subPath: default.conf
+             name: nginx-route-volume
+             readOnly: true
+         readinessProbe:
+           httpGet:
+             path: /v1/hc
+             port: 80
+           initialDelaySeconds: 5
+           periodSeconds: 10
+      volumes:
+        - name: nginx-conf-volume
+          configMap:
+            name: nginx-config
+        - name: nginx-route-volume
+          configMap:
+            name: nginx-route-volume
