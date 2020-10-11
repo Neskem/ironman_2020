@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: newspace
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: newspace-quotas-1
+  namespace: newspace
+spec:
+  hard:
+    requests.cpu: "1"
+    limits.cpu: "1"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: newspace-quotas-2
+  namespace: newspace
+spec:
+  hard:
+    services: "3"
+    secrets: "3"
+    configmaps: "3"
+    replicationcontrollers: "10"
