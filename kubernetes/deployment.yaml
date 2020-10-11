@@ -57,6 +57,8 @@ spec:
              subPath: default.conf
              name: nginx-route-volume
              readOnly: true
+           - mountPath: "/var/www/html"
+             name: mypd
          readinessProbe:
            httpGet:
              path: /v1/hc
@@ -70,3 +72,6 @@ spec:
         - name: nginx-route-volume
           configMap:
             name: nginx-route-volume
+        - name: mypd
+          persistentVolumeClaim:
+            claimName: pvc
